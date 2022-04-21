@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
-import { Button, InputAdornment, Tab, Tabs, TextField } from '@material-ui/core';
+import { Button, InputAdornment, List, ListItem, ListItemText, Tab, Tabs, TextField } from '@material-ui/core';
 import { MeetingRoomRounded, PersonRounded } from '@mui/icons-material';
 import { lightTheme as theme } from '@28stoneconsulting/design-system';
+import { ListItemButton } from '@mui/material';
 
 const EnterGameRoom = () => {
   const [activeTab, setActiveTab] = useState<string>('create');
@@ -64,6 +65,29 @@ const EnterGameRoom = () => {
               variant="outlined"
               required
             />
+            <ListStyled dense>
+              <ListItem>
+                <ListItemButton>
+                  <ListItemText primary="Room 1" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem>
+                <ListItemButton>
+                  <ListItemText primary="Room 2" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem>
+                <ListItemButton>
+                  <ListItemText primary="Room 3" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem>
+                <ListItemButton>
+                  <ListItemText primary="Room 4" />
+                </ListItemButton>
+              </ListItem>
+            </ListStyled>
+            <CreateButton variant="contained">Join Room</CreateButton>
           </RoomDetailsContainer>
         )}
       </RoomSelectPanel>
@@ -78,12 +102,10 @@ const EnterGameRoomContainer = styled.div`
 `;
 
 const RoomSelectPanel = styled.div`
-  height: 320px;
   width: 600px;
   border-radius: 22px;
-  top: 50%;
-  transform: translateY(-50%);
-  position: absolute;
+  position: relative;
+  top: 22vh;
   box-shadow: 0 0 20px 0 rgb(0 0 0 / 10%);
   background-color: #ffffff;
 `;
@@ -116,6 +138,14 @@ const CreateButton = styled(Button)`
   &:hover {
     background-color: ${theme.palette.brand.orange};
   }
+`;
+
+const ListStyled = styled(List)`
+  border: 1px solid #c9c9c9;
+  border-radius: 4px;
+  height: 140px;
+  overflow-y: scroll;
+  margin: 12px 0;
 `;
 
 export default EnterGameRoom;
