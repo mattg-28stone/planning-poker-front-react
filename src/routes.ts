@@ -1,11 +1,11 @@
 import React from 'react';
 
-const EnterGameRoom = React.lazy(() => import('./pages/EnterGameRoom'));
-const GameRoom = React.lazy(() => import('./pages/GameRoom'));
+const EnterRoom = React.lazy(() => import('./pages/EnterRoom'));
+const Room = React.lazy(() => import('./pages/Room'));
 
 export enum Routes {
-  EnterGameRoom = '/enter-game-room',
-  GameRoom = '/game-room/:roomId',
+  EnterRoom = '/enter-room',
+  Room = '/room/:roomId',
 }
 
 type IsAvailableFunction = () => boolean;
@@ -17,19 +17,19 @@ type RouteConfig = {
 };
 
 export const isRouteAvailable: Record<Routes, IsAvailableFunction> = {
-  [Routes.EnterGameRoom]: () => true,
-  [Routes.GameRoom]: () => true,
+  [Routes.EnterRoom]: () => true,
+  [Routes.Room]: () => true,
 };
 
 export const ROUTE_CONFIG: RouteConfig[] = [
   {
-    url: Routes.EnterGameRoom,
-    component: EnterGameRoom,
-    isAvailable: isRouteAvailable[Routes.EnterGameRoom],
+    url: Routes.EnterRoom,
+    component: EnterRoom,
+    isAvailable: isRouteAvailable[Routes.EnterRoom],
   },
   {
-    url: Routes.GameRoom,
-    component: GameRoom,
-    isAvailable: isRouteAvailable[Routes.GameRoom],
+    url: Routes.Room,
+    component: Room,
+    isAvailable: isRouteAvailable[Routes.Room],
   },
 ];

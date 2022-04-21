@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
-import EnterGameRoom from './pages/EnterGameRoom';
-import GameRoom from './pages/GameRoom';
+import EnterRoom from './pages/EnterRoom';
+import Room from './pages/Room';
 
 const App = () => {
   return (
@@ -9,10 +9,10 @@ const App = () => {
       <Router>
         <Switch>
           <Route path="/" exact>
-            <Redirect to="/enter-game-room" />
+            <Redirect to="/enter-room" />
           </Route>
-          <Route path="/enter-game-room" component={EnterGameRoom} />
-          <Route path="/game-room/:roomId" component={GameRoom} />
+          <Route path="/enter-room" component={EnterRoom} />
+          <Route path="/room/:roomId" component={Room} />
         </Switch>
       </Router>
     </Suspense>
