@@ -5,11 +5,18 @@ import { Button, InputAdornment, List, ListItem, ListItemText, TextField } from 
 import { PersonRounded } from '@mui/icons-material';
 import { ListItemButton } from '@mui/material';
 
-const JoinRoom = () => {
+interface Props {
+  username: string;
+  handleUsernameChange: (username: string) => void;
+}
+
+const JoinRoom: React.FC<Props> = ({ username, handleUsernameChange }) => {
   return (
     <RoomDetailsContainer>
       <TextFieldStyled
         label="Your name"
+        value={username}
+        onChange={event => handleUsernameChange(event.target.value)}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -69,17 +76,17 @@ const TextFieldStyled = styled(TextField)({
 });
 
 const ListStyled = styled(List)`
+  overflow-y: scroll;
   border: 1px solid #c9c9c9;
   border-radius: 4px;
   height: 140px;
-  overflow-y: scroll;
   margin: 12px 0;
 `;
 
 const ButtonStyled = styled(Button)`
   margin: 12px 0;
-  color: #ffffff;
   background: ${theme.palette.brand.orange};
+  color: #ffffff;
   &:hover {
     background-color: ${theme.palette.brand.orange};
   }

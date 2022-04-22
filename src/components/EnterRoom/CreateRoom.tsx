@@ -1,14 +1,37 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { lightTheme as theme } from '@28stoneconsulting/design-system';
-import { Button, InputAdornment, TextField } from '@material-ui/core';
+import { Button, InputAdornment, TextField, TextFieldProps } from '@material-ui/core';
 import { MeetingRoomRounded, PersonRounded } from '@mui/icons-material';
+import { createRoomErrors } from '../../types/EnterRoom';
 
-const CreateRoom = () => {
+interface Props {
+  username: string;
+  handleUsernameChange: (username: string) => void;
+  roomName: string;
+  handleRoomNameChange: (roomName: string) => void;
+  handleCreateRoom: () => void;
+  createRoomErrors: createRoomErrors;
+}
+
+const CreateRoom: React.FC<Props> = ({
+  username,
+  handleUsernameChange,
+  roomName,
+  handleRoomNameChange,
+  handleCreateRoom,
+  createRoomErrors,
+}) => {
+  const { usernameError, roomNameError } = createRoomErrors;
+
   return (
     <RoomDetailsContainer>
       <TextFieldStyled
         label="Your name"
+        value={username}
+        onChange={event => handleUsernameChange(event.target.value)}
+        error={usernameError}
+        helperText={usernameError && 'Please enter your name'}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -21,6 +44,10 @@ const CreateRoom = () => {
       />
       <TextFieldStyled
         label="Room name"
+        value={roomName}
+        onChange={event => handleRoomNameChange(event.target.value)}
+        error={roomNameError}
+        helperText={roomNameError && 'Please enter a room name'}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -31,7 +58,9 @@ const CreateRoom = () => {
         variant="outlined"
         required
       />
-      <ButtonStyled variant="contained">Create Room</ButtonStyled>
+      <ButtonStyled onClick={handleCreateRoom} variant="contained">
+        Create Room
+      </ButtonStyled>
     </RoomDetailsContainer>
   );
 };
@@ -42,25 +71,25 @@ const RoomDetailsContainer = styled.div`
   padding: 25px;
 `;
 
-const TextFieldStyled = styled(TextField)({
+const TextFieldStyled = styled(TextField)<TextFieldProps>(({ error }) => ({
   margin: '12px 0',
   '& label.Mui-focused': {
-    color: theme.palette.brand.darkGrey,
+    color: error ? theme.palette.brand.orange : theme.palette.brand.darkGrey,
   },
   '& .MuiOutlinedInput-root': {
     '&:hover fieldset': {
-      borderColor: theme.palette.brand.darkGrey,
+      borderColor: error ? theme.palette.brand.orange : theme.palette.brand.darkGrey,
     },
     '&.Mui-focused fieldset': {
-      borderColor: theme.palette.brand.darkGrey,
+      borderColor: error ? theme.palette.brand.orange : theme.palette.brand.darkGrey,
     },
   },
-});
+}));
 
 const ButtonStyled = styled(Button)`
   margin: 12px 0;
-  color: #ffffff;
   background: ${theme.palette.brand.orange};
+  color: #ffffff;
   &:hover {
     background-color: ${theme.palette.brand.orange};
   }
