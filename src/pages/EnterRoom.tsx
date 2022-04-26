@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { lightTheme as theme } from '@28stoneconsulting/design-system';
 import { Tab, Tabs } from '@material-ui/core';
@@ -7,6 +8,8 @@ import JoinRoom from '../components/EnterRoom/JoinRoom';
 import { createRoomErrors } from '../types/EnterRoom';
 
 const EnterRoom = () => {
+  const history = useHistory();
+
   const [activeTab, setActiveTab] = useState<string>('create');
   const [username, setUsername] = useState<string>('');
   const [roomName, setRoomName] = useState<string>('');
@@ -21,20 +24,33 @@ const EnterRoom = () => {
 
   const handleUsernameChange = (username: string) => {
     setUsername(username);
-    setCreateRoomErrors({ ...createRoomErrors, usernameError: !username });
+    setCreateRoomErrors({
+      ...createRoomErrors,
+      usernameError: !username,
+    });
   };
 
   const handleRoomNameChange = (roomName: string) => {
     setRoomName(roomName);
-    setCreateRoomErrors({ ...createRoomErrors, roomNameError: !roomName });
+    setCreateRoomErrors({
+      ...createRoomErrors,
+      roomNameError: !roomName,
+    });
   };
 
   const handleCreateRoom = () => {
-    setCreateRoomErrors({ usernameError: !username, roomNameError: !roomName });
+    setCreateRoomErrors({
+      usernameError: !username,
+      roomNameError: !roomName,
+    });
 
     if (username && roomName) {
-      console.log('Creating room: ', roomName, ', for: ', username);
+      history.push('/room/1', { roomCreator: username, roomName });
     }
+  };
+
+  const handleJoinRoom = () => {
+    history.push('/room/1', { roomCreator: username, roomName });
   };
 
   return (
@@ -58,7 +74,7 @@ const EnterRoom = () => {
             createRoomErrors={createRoomErrors}
           />
         ) : (
-          <JoinRoom username={username} handleUsernameChange={handleUsernameChange} />
+          <JoinRoom username={username} handleUsernameChange={handleUsernameChange} handleJoinRoom={handleJoinRoom} />
         )}
       </EnterRoomPanel>
     </EnterRoomContainer>

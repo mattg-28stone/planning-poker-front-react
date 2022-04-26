@@ -8,9 +8,10 @@ import { ListItemButton } from '@mui/material';
 interface Props {
   username: string;
   handleUsernameChange: (username: string) => void;
+  handleJoinRoom: () => void;
 }
 
-const JoinRoom: React.FC<Props> = ({ username, handleUsernameChange }) => {
+const JoinRoom: React.FC<Props> = ({ username, handleUsernameChange, handleJoinRoom }) => {
   return (
     <RoomDetailsContainer>
       <TextFieldStyled
@@ -49,7 +50,9 @@ const JoinRoom: React.FC<Props> = ({ username, handleUsernameChange }) => {
           </ListItemButton>
         </ListItem>
       </ListStyled>
-      <ButtonStyled variant="contained">Join Room</ButtonStyled>
+      <ButtonStyled onClick={handleJoinRoom} variant="contained">
+        Join Room
+      </ButtonStyled>
     </RoomDetailsContainer>
   );
 };

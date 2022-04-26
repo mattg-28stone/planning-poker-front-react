@@ -1,10 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom';
+import { StylesProvider } from '@material-ui/core';
 import App from './App';
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
-root.render(
-  <React.StrictMode>
+ReactDOM.render(
+  <StylesProvider injectFirst>
     <App />
-  </React.StrictMode>,
+  </StylesProvider>,
+  document.getElementById('root'),
 );
