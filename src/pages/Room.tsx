@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import VirtualRoom from '../components/Room/VirtualRoom';
-import { User } from '../types/Room';
+import { Player } from '../types/Room';
 
 interface LocationProps {
-  roomCreator: string;
+  playerName: string;
   roomName: string;
 }
 
@@ -12,19 +12,19 @@ const Room = () => {
   const { roomId } = useParams<{ roomId: string }>();
   const { state } = useLocation<LocationProps>();
 
-  let roomCreator = '';
+  let playerName = '';
   let roomName = '';
 
   if (state) {
-    roomCreator = state.roomCreator;
+    playerName = state.playerName;
     roomName = state.roomName;
   } else {
     // Fetch data from api?
   }
 
-  const [users, setUsers] = useState<Array<User>>([{ username: roomCreator, role: 'creator' }]);
+  const [players, setPlayers] = useState<Array<Player>>([{ playerName, role: 'creator' }]);
 
-  return <VirtualRoom roomId={roomId} roomName={roomName} users={users} />;
+  return <VirtualRoom roomId={roomId} roomName={roomName} players={players} />;
 };
 
 export default Room;

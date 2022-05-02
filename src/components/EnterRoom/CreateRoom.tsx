@@ -6,8 +6,8 @@ import { MeetingRoomRounded, PersonRounded } from '@mui/icons-material';
 import { createRoomErrors } from '../../types/EnterRoom';
 
 interface Props {
-  username: string;
-  handleUsernameChange: (username: string) => void;
+  playerName: string;
+  handlePlayerNameChange: (playerName: string) => void;
   roomName: string;
   handleRoomNameChange: (roomName: string) => void;
   handleCreateRoom: () => void;
@@ -15,23 +15,23 @@ interface Props {
 }
 
 const CreateRoom: React.FC<Props> = ({
-  username,
-  handleUsernameChange,
+  playerName,
+  handlePlayerNameChange,
   roomName,
   handleRoomNameChange,
   handleCreateRoom,
   createRoomErrors,
 }) => {
-  const { usernameError, roomNameError } = createRoomErrors;
+  const { playerNameError, roomNameError } = createRoomErrors;
 
   return (
     <RoomDetailsContainer>
       <TextFieldStyled
         label="Your name"
-        value={username}
-        onChange={event => handleUsernameChange(event.target.value)}
-        error={usernameError}
-        helperText={usernameError && 'Please enter your name'}
+        value={playerName}
+        onChange={event => handlePlayerNameChange(event.target.value)}
+        error={playerNameError}
+        helperText={playerNameError && 'Please enter your name'}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

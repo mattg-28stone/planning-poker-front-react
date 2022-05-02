@@ -1,32 +1,42 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { lightTheme as theme } from '@28stoneconsulting/design-system';
 import { Tab, Tabs } from '@material-ui/core';
 import CreateRoom from '../components/EnterRoom/CreateRoom';
 import JoinRoom from '../components/EnterRoom/JoinRoom';
-import { createRoomErrors } from '../types/EnterRoom';
+import { createRoomErrors, GameRoom } from '../types/EnterRoom';
+import { postCreateGameRoom } from '../services/postCreateGameRoom';
+import { postJoinRoom } from '../services/postJoinRoom';
+import { getGameRoomList } from '../services/getGameRoomList';
 
 const EnterRoom = () => {
   const history = useHistory();
 
   const [activeTab, setActiveTab] = useState<string>('create');
-  const [username, setUsername] = useState<string>('');
+  const [playerName, setPlayerName] = useState<string>('');
   const [roomName, setRoomName] = useState<string>('');
   const [createRoomErrors, setCreateRoomErrors] = useState<createRoomErrors>({
-    usernameError: false,
+    playerNameError: false,
     roomNameError: false,
   });
+  const [gameRooms, setGameRooms] = useState<Array<GameRoom>>([]);
+
+  useEffect(() => {
+    getGameRoomList().then(res => {
+      setGameRooms(res.data);
+    });
+  }, []);
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
   };
 
-  const handleUsernameChange = (username: string) => {
-    setUsername(username);
+  const handlePlayerNameChange = (playerName: string) => {
+    setPlayerName(playerName);
     setCreateRoomErrors({
       ...createRoomErrors,
-      usernameError: !username,
+      playerNameError: !playerName,
     });
   };
 
@@ -40,17 +50,22 @@ const EnterRoom = () => {
 
   const handleCreateRoom = () => {
     setCreateRoomErrors({
-      usernameError: !username,
+      playerNameError: !playerName,
       roomNameError: !roomName,
     });
 
-    if (username && roomName) {
-      history.push('/room/1', { roomCreator: username, roomName });
+    if (playerName && roomName) {
+      postCreateGameRoom(roomName).then(res => {
+        const { id } = res.data;
+        postJoinRoom(id, playerName).then(() => {
+          history.push(`/room/${id}`, { playerName, roomName });
+        });
+      });
     }
   };
 
   const handleJoinRoom = () => {
-    history.push('/room/1', { roomCreator: username, roomName });
+    history.push('/room/1', { roomCreator: playerName, roomName });
   };
 
   return (
@@ -66,15 +81,20 @@ const EnterRoom = () => {
         </Tabs>
         {activeTab === 'create' ? (
           <CreateRoom
-            username={username}
-            handleUsernameChange={handleUsernameChange}
+            playerName={playerName}
+            handlePlayerNameChange={handlePlayerNameChange}
             roomName={roomName}
             handleRoomNameChange={handleRoomNameChange}
             handleCreateRoom={handleCreateRoom}
             createRoomErrors={createRoomErrors}
           />
         ) : (
-          <JoinRoom username={username} handleUsernameChange={handleUsernameChange} handleJoinRoom={handleJoinRoom} />
+          <JoinRoom
+            playerName={playerName}
+            handlePlayerNameChange={handlePlayerNameChange}
+            handleJoinRoom={handleJoinRoom}
+            gameRooms={gameRooms}
+          />
         )}
       </EnterRoomPanel>
     </EnterRoomContainer>
@@ -91,7 +111,7 @@ const EnterRoomPanel = styled.div`
   position: relative;
   top: 22vh;
   width: 600px;
-  border-radius: 22px;
+  border-radius: 7px;
   box-shadow: 0 0 20px 0 rgb(0 0 0 / 10%);
   background-color: #ffffff;
 `;

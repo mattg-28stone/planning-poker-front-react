@@ -4,55 +4,51 @@ import { lightTheme as theme } from '@28stoneconsulting/design-system';
 import { Button, InputAdornment, List, ListItem, ListItemText, TextField } from '@material-ui/core';
 import { PersonRounded } from '@mui/icons-material';
 import { ListItemButton } from '@mui/material';
+import { GameRoom } from '../../types/EnterRoom';
 
 interface Props {
-  username: string;
-  handleUsernameChange: (username: string) => void;
+  playerName: string;
+  handlePlayerNameChange: (playerName: string) => void;
   handleJoinRoom: () => void;
+  gameRooms: Array<GameRoom>;
 }
 
-const JoinRoom: React.FC<Props> = ({ username, handleUsernameChange, handleJoinRoom }) => {
+const JoinRoom: React.FC<Props> = ({ playerName, handlePlayerNameChange, handleJoinRoom, gameRooms }) => {
   return (
     <RoomDetailsContainer>
-      <TextFieldStyled
-        label="Your name"
-        value={username}
-        onChange={event => handleUsernameChange(event.target.value)}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <PersonRounded style={{ color: theme.palette.brand.darkGrey }} />
-            </InputAdornment>
-          ),
-        }}
-        variant="outlined"
-        required
-      />
-      <ListStyled dense>
-        <ListItem>
-          <ListItemButton>
-            <ListItemText primary="Room 1" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem>
-          <ListItemButton>
-            <ListItemText primary="Room 2" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem>
-          <ListItemButton>
-            <ListItemText primary="Room 3" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem>
-          <ListItemButton>
-            <ListItemText primary="Room 4" />
-          </ListItemButton>
-        </ListItem>
-      </ListStyled>
-      <ButtonStyled onClick={handleJoinRoom} variant="contained">
-        Join Room
-      </ButtonStyled>
+      {gameRooms.length > 0 ? (
+        <>
+          <TextFieldStyled
+            label="Your name"
+            value={playerName}
+            onChange={event => handlePlayerNameChange(event.target.value)}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <PersonRounded style={{ color: theme.palette.brand.darkGrey }} />
+                </InputAdornment>
+              ),
+            }}
+            variant="outlined"
+            required
+          />
+          <RoomListTitleStyled>Available Rooms</RoomListTitleStyled>
+          <ListStyled dense>
+            {gameRooms.map((room, index) => (
+              <ListItem key={index}>
+                <ListItemButton>
+                  <ListItemText primary={room.name} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </ListStyled>
+          <ButtonStyled onClick={handleJoinRoom} variant="contained">
+            Join Room
+          </ButtonStyled>
+        </>
+      ) : (
+        <NoRoomsTitleStyled>No available rooms.</NoRoomsTitleStyled>
+      )}
     </RoomDetailsContainer>
   );
 };
@@ -78,12 +74,19 @@ const TextFieldStyled = styled(TextField)({
   },
 });
 
+const RoomListTitleStyled = styled.span`
+  font-size: 12px;
+  font-family: 'Roboto', 'Serif';
+  margin-top: 6px;
+  color: #929397;
+`;
+
 const ListStyled = styled(List)`
   overflow-y: scroll;
   border: 1px solid #c9c9c9;
   border-radius: 4px;
   height: 140px;
-  margin: 12px 0;
+  margin: 6px 0 12px 0;
 `;
 
 const ButtonStyled = styled(Button)`
@@ -93,6 +96,14 @@ const ButtonStyled = styled(Button)`
   &:hover {
     background-color: ${theme.palette.brand.orange};
   }
+`;
+
+const NoRoomsTitleStyled = styled.span`
+  margin: 12px 0;
+  font-size: 16px;
+  font-family: 'Roboto', 'Serif';
+  color: #818181;
+  text-align: center;
 `;
 
 export default JoinRoom;
