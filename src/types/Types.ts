@@ -11,6 +11,6 @@ export interface GameRoom {
 }
 
 export interface Player {
-  id: string;
+  id?: string;
   name: string;
 }

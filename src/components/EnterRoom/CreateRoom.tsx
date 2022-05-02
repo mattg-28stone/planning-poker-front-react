@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { lightTheme as theme } from '@28stoneconsulting/design-system';
 import { Button, InputAdornment, TextField, TextFieldProps } from '@material-ui/core';
 import { MeetingRoomRounded, PersonRounded } from '@mui/icons-material';
-import { createRoomErrors } from '../../types/EnterRoom';
+import { createRoomErrors } from '../../types/Types';
 
 interface Props {
   playerName: string;

@@ -4,7 +4,7 @@ import { lightTheme as theme } from '@28stoneconsulting/design-system';
 import { Button, InputAdornment, List, ListItem, ListItemText, TextField } from '@material-ui/core';
 import { PersonRounded } from '@mui/icons-material';
 import { ListItemButton } from '@mui/material';
-import { GameRoom } from '../../types/EnterRoom';
+import { GameRoom } from '../../types/Types';
 
 interface Props {
   playerName: string;
@@ -32,7 +32,7 @@ const JoinRoom: React.FC<Props> = ({ playerName, handlePlayerNameChange, handleJ
             variant="outlined"
             required
           />
-          <RoomListTitleStyled>Available Rooms</RoomListTitleStyled>
+          <RoomListLabel>Available Rooms</RoomListLabel>
           <ListStyled dense>
             {gameRooms.map((room, index) => (
               <ListItem key={index}>
@@ -47,7 +47,7 @@ const JoinRoom: React.FC<Props> = ({ playerName, handlePlayerNameChange, handleJ
           </ButtonStyled>
         </>
       ) : (
-        <NoRoomsTitleStyled>No available rooms.</NoRoomsTitleStyled>
+        <NoRoomsText>No available rooms.</NoRoomsText>
       )}
     </RoomDetailsContainer>
   );
@@ -74,9 +74,9 @@ const TextFieldStyled = styled(TextField)({
   },
 });
 
-const RoomListTitleStyled = styled.span`
+const RoomListLabel = styled.span`
   font-size: 12px;
-  font-family: 'Roboto', 'Serif';
+  font-family: Roboto, serif;
   margin-top: 6px;
   color: #929397;
 `;
@@ -98,10 +98,10 @@ const ButtonStyled = styled(Button)`
   }
 `;
 
-const NoRoomsTitleStyled = styled.span`
+const NoRoomsText = styled.span`
   margin: 12px 0;
   font-size: 16px;
-  font-family: 'Roboto', 'Serif';
+  font-family: Roboto, serif;
   color: #818181;
   text-align: center;
 `;

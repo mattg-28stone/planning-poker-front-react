@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { lightTheme as theme } from '@28stoneconsulting/design-system';
 import { Button, Tooltip } from '@material-ui/core';
 import { ContentCopyRounded, PersonRounded } from '@mui/icons-material';
-import { Player } from '../../types/Room';
+import { Player } from '../../types/Types';
 
 interface Props {
   roomId: string;
@@ -27,7 +27,7 @@ const VirtualRoom: React.FC<Props> = ({ roomName, players, getURL }) => {
           {players.map((player, index) => (
             <PlayerContainer key={index}>
               <PersonRoundedStyled />
-              {player.playerName}
+              {player.name}
             </PlayerContainer>
           ))}
         </PlayersPanel>

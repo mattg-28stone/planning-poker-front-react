@@ -5,7 +5,7 @@ import { lightTheme as theme } from '@28stoneconsulting/design-system';
 import { Tab, Tabs } from '@material-ui/core';
 import CreateRoom from '../components/EnterRoom/CreateRoom';
 import JoinRoom from '../components/EnterRoom/JoinRoom';
-import { createRoomErrors, GameRoom } from '../types/EnterRoom';
+import { createRoomErrors, GameRoom } from '../types/Types';
 import { postCreateGameRoom } from '../services/postCreateGameRoom';
 import { postJoinRoom } from '../services/postJoinRoom';
 import { getGameRoomList } from '../services/getGameRoomList';
@@ -60,7 +60,7 @@ const EnterRoom = () => {
         .then(res => {
           const { id } = res.data;
           postJoinRoom(id, playerName).then(() => {
-            history.push(`/room/${id}`, { playerName, roomName });
+            history.push(`/room/${id}`);
           });
         })
         .catch(error => {

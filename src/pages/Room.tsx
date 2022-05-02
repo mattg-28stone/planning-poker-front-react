@@ -1,28 +1,22 @@
-import React, { useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import VirtualRoom from '../components/Room/VirtualRoom';
-import { Player } from '../types/Room';
-
-interface LocationProps {
-  playerName: string;
-  roomName: string;
-}
+import { getGameRoomById } from '../services/getGameRoomById';
+import { Player } from '../types/Types';
 
 const Room = () => {
   const { roomId } = useParams<{ roomId: string }>();
-  const { state } = useLocation<LocationProps>();
 
-  let playerName = '';
-  let roomName = '';
+  const [roomName, setRoomName] = useState<string>('');
+  const [players, setPlayers] = useState<Array<Player>>([]);
 
-  if (state) {
-    playerName = state.playerName;
-    roomName = state.roomName;
-  } else {
-    // Fetch data from api?
-  }
-
-  const [players, setPlayers] = useState<Array<Player>>([{ playerName, role: 'creator' }]);
+  useEffect(() => {
+    getGameRoomById(roomId).then(res => {
+      const { players, name } = res.data;
+      setPlayers(players);
+      setRoomName(name);
+    });
+  }, [roomId]);
 
   const getURL = () => {
     navigator.clipboard.writeText(window.location.href);
