@@ -22,7 +22,7 @@ const CreateRoom: React.FC<Props> = ({
   handleCreateRoom,
   createRoomErrors,
 }) => {
-  const { playerNameError, roomNameError } = createRoomErrors;
+  const { noPlayerName, noRoomName, roomNameAlreadyExists } = createRoomErrors;
 
   return (
     <RoomDetailsContainer>
@@ -30,12 +30,12 @@ const CreateRoom: React.FC<Props> = ({
         label="Your name"
         value={playerName}
         onChange={event => handlePlayerNameChange(event.target.value)}
-        error={playerNameError}
-        helperText={playerNameError && 'Please enter your name'}
+        error={noPlayerName}
+        helperText={noPlayerName && 'Please enter your name'}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <PersonRounded style={{ color: theme.palette.brand.darkGrey }} />
+              <PersonRoundedStyled />
             </InputAdornment>
           ),
         }}
@@ -46,12 +46,14 @@ const CreateRoom: React.FC<Props> = ({
         label="Room name"
         value={roomName}
         onChange={event => handleRoomNameChange(event.target.value)}
-        error={roomNameError}
-        helperText={roomNameError && 'Please enter a room name'}
+        error={noRoomName || roomNameAlreadyExists}
+        helperText={
+          noRoomName ? 'Please enter a room name' : roomNameAlreadyExists ? 'Room with that name already exists' : null
+        }
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <MeetingRoomRounded style={{ color: theme.palette.brand.darkGrey }} />
+              <MeetingRoomRoundedStyled />
             </InputAdornment>
           ),
         }}
@@ -85,6 +87,14 @@ const TextFieldStyled = styled(TextField)<TextFieldProps>(({ error }) => ({
     },
   },
 }));
+
+const PersonRoundedStyled = styled(PersonRounded)`
+  color: ${theme.palette.brand.darkGrey};
+`;
+
+const MeetingRoomRoundedStyled = styled(MeetingRoomRounded)`
+  color: ${theme.palette.brand.darkGrey};
+`;
 
 const ButtonStyled = styled(Button)`
   margin: 12px 0;

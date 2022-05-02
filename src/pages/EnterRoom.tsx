@@ -17,8 +17,9 @@ const EnterRoom = () => {
   const [playerName, setPlayerName] = useState<string>('');
   const [roomName, setRoomName] = useState<string>('');
   const [createRoomErrors, setCreateRoomErrors] = useState<createRoomErrors>({
-    playerNameError: false,
-    roomNameError: false,
+    noPlayerName: false,
+    noRoomName: false,
+    roomNameAlreadyExists: false,
   });
   const [gameRooms, setGameRooms] = useState<Array<GameRoom>>([]);
 
@@ -36,7 +37,7 @@ const EnterRoom = () => {
     setPlayerName(playerName);
     setCreateRoomErrors({
       ...createRoomErrors,
-      playerNameError: !playerName,
+      noPlayerName: !playerName,
     });
   };
 
@@ -44,23 +45,31 @@ const EnterRoom = () => {
     setRoomName(roomName);
     setCreateRoomErrors({
       ...createRoomErrors,
-      roomNameError: !roomName,
+      noRoomName: !roomName,
     });
   };
 
   const handleCreateRoom = () => {
     setCreateRoomErrors({
-      playerNameError: !playerName,
-      roomNameError: !roomName,
+      noPlayerName: !playerName,
+      noRoomName: !roomName,
     });
 
     if (playerName && roomName) {
-      postCreateGameRoom(roomName).then(res => {
-        const { id } = res.data;
-        postJoinRoom(id, playerName).then(() => {
-          history.push(`/room/${id}`, { playerName, roomName });
+      postCreateGameRoom(roomName)
+        .then(res => {
+          const { id } = res.data;
+          postJoinRoom(id, playerName).then(() => {
+            history.push(`/room/${id}`, { playerName, roomName });
+          });
+        })
+        .catch(error => {
+          console.log('Failed to create new room - ', error);
+          setCreateRoomErrors({
+            ...createRoomErrors,
+            roomNameAlreadyExists: true,
+          });
         });
-      });
     }
   };
 

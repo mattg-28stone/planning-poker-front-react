@@ -1,26 +1,32 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { lightTheme as theme } from '@28stoneconsulting/design-system';
-import { PersonRounded } from '@mui/icons-material';
+import { Button, Tooltip } from '@material-ui/core';
+import { ContentCopyRounded, PersonRounded } from '@mui/icons-material';
 import { Player } from '../../types/Room';
 
 interface Props {
   roomId: string;
   roomName: string;
   players: Array<Player>;
+  getURL: () => void;
 }
 
-const VirtualRoom: React.FC<Props> = ({ roomName, players }) => {
+const VirtualRoom: React.FC<Props> = ({ roomName, players, getURL }) => {
   return (
     <RoomContainer>
       <div>
-        <ControlPanel></ControlPanel>
+        <ControlPanel>
+          <Tooltip title="Copy room URL">
+            <CopyURLButtonStyled>
+              <ContentCopyRounded onClick={() => getURL()} />
+            </CopyURLButtonStyled>
+          </Tooltip>
+        </ControlPanel>
         <PlayersPanel>
           {players.map((player, index) => (
             <PlayerContainer key={index}>
-              <PersonRounded
-                style={{ color: theme.palette.brand.darkGrey, position: 'relative', top: '4px', padding: '0 10px 0 0' }}
-              />
+              <PersonRoundedStyled />
               {player.playerName}
             </PlayerContainer>
           ))}
@@ -53,6 +59,10 @@ const ControlPanel = styled.div`
   margin-bottom: 20px;
 `;
 
+const CopyURLButtonStyled = styled(Button)`
+  height: 100%;
+`;
+
 const PlayersPanel = styled.div`
   width: 300px;
   min-height: 570px;
@@ -68,6 +78,13 @@ const PlayerContainer = styled.div`
   font-family: Roboto, serif;
   color: #333333;
   cursor: pointer;
+`;
+
+const PersonRoundedStyled = styled(PersonRounded)`
+  color: ${theme.palette.brand.darkGrey};
+  position: relative;
+  top: 4px;
+  padding: 0 10px 0 0;
 `;
 
 const RoomNameText = styled.div`

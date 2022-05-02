@@ -24,7 +24,11 @@ const Room = () => {
 
   const [players, setPlayers] = useState<Array<Player>>([{ playerName, role: 'creator' }]);
 
-  return <VirtualRoom roomId={roomId} roomName={roomName} players={players} />;
+  const getURL = () => {
+    navigator.clipboard.writeText(window.location.href);
+  };
+
+  return <VirtualRoom roomId={roomId} roomName={roomName} players={players} getURL={getURL} />;
 };
 
 export default Room;
