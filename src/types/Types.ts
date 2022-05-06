@@ -1,7 +1,7 @@
 export interface createRoomErrors {
   noPlayerName: boolean;
   noRoomName: boolean;
-  roomNameAlreadyExists?: boolean;
+  apiErrors?: Array<string>;
 }
 
 export interface GameRoom {

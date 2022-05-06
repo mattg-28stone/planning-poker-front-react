@@ -22,7 +22,7 @@ const CreateRoom: React.FC<Props> = ({
   handleCreateRoom,
   createRoomErrors,
 }) => {
-  const { noPlayerName, noRoomName, roomNameAlreadyExists } = createRoomErrors;
+  const { noPlayerName, noRoomName, apiErrors } = createRoomErrors;
 
   return (
     <RoomDetailsContainer>
@@ -46,10 +46,8 @@ const CreateRoom: React.FC<Props> = ({
         label="Room name"
         value={roomName}
         onChange={event => handleRoomNameChange(event.target.value)}
-        error={noRoomName || roomNameAlreadyExists}
-        helperText={
-          noRoomName ? 'Please enter a room name' : roomNameAlreadyExists ? 'Room with that name already exists' : null
-        }
+        error={noRoomName || apiErrors ? true : false}
+        helperText={noRoomName ? 'Please enter a room name' : apiErrors ? apiErrors[0] : null}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

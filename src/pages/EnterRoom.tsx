@@ -19,7 +19,7 @@ const EnterRoom = () => {
   const [createRoomErrors, setCreateRoomErrors] = useState<createRoomErrors>({
     noPlayerName: false,
     noRoomName: false,
-    roomNameAlreadyExists: false,
+    apiErrors: [],
   });
   const [gameRooms, setGameRooms] = useState<Array<GameRoom>>([]);
 
@@ -64,10 +64,10 @@ const EnterRoom = () => {
           });
         })
         .catch(error => {
-          console.log('Failed to create new room - ', error);
+          const errorData = error.response.data;
           setCreateRoomErrors({
             ...createRoomErrors,
-            roomNameAlreadyExists: true,
+            apiErrors: errorData.errors ? errorData.errors.roomName : [errorData],
           });
         });
     }
